@@ -1,0 +1,179 @@
+/* FeedbackForm.css */
+.feedback-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    backdrop-filter: blur(5px);
+    animation: fadeIn 0.2s ease-out;
+}
+
+.feedback-modal {
+    background: #fff;
+    width: 90%;
+    max-width: 600px;
+    border-radius: 16px;
+    padding: 2rem;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+    animation: slideUp 0.3s ease-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes slideUp {
+    from {
+        transform: translateY(20px);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 1rem;
+}
+
+
+.close-btn {
+    background: none;
+    border: none;
+    font-size: 2rem;
+    cursor: pointer;
+    color: #aaa;
+    line-height: 1;
+}
+
+.close-btn:hover {
+    color: #333;
+}
+
+.form-group {
+    margin-bottom: 1.2rem;
+}
+
+.form-row {
+    display: flex;
+    gap: 1rem;
+}
+
+.form-row .form-group {
+    flex: 1;
+}
+
+label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+    color: #555;
+    font-size: 0.9rem;
+}
+
+.feedback-modal input[type="text"],
+.feedback-modal select,
+.feedback-modal textarea {
+    width: 100%;
+    padding: 0.8rem;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-family: inherit;
+    font-size: 0.95rem;
+    transition: border-color 0.2s;
+}
+
+/* File Input Styling */
+.feedback-modal input[type="file"] {
+    width: 100%;
+    padding: 0.5rem;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-family: inherit;
+    font-size: 0.95rem;
+    background: #f8f9fa;
+    cursor: pointer;
+    transition: border-color 0.2s;
+}
+
+.feedback-modal input[type="file"]::file-selector-button {
+    margin-right: 1rem;
+    border: 1px solid #dcdcdc;
+    background: #ffffff;
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    color: #333;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: inherit;
+}
+
+.feedback-modal input[type="file"]::file-selector-button:hover {
+    background: #f1f2f6;
+    border-color: #b2bec3;
+}
+
+.feedback-modal input[type="text"]:focus,
+.feedback-modal select:focus,
+.feedback-modal textarea:focus,
+.feedback-modal input[type="file"]:focus {
+    border-color: #4A90E2;
+    outline: none;
+}
+
+textarea {
+    resize: vertical;
+}
+
+.modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+    margin-top: 2rem;
+}
+
+.cancel-btn {
+    padding: 0.8rem 1.5rem;
+    background: #f1f2f6;
+    border: none;
+    border-radius: 8px;
+    color: #636e72;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.submit-btn {
+    padding: 0.8rem 2rem;
+    background: linear-gradient(135deg, #4A90E2, #27D6C8);
+    border: none;
+    border-radius: 8px;
+    color: #fff;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(74, 144, 226, 0.3);
+}
+
+.submit-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(74, 144, 226, 0.4);
+}

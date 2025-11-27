@@ -1,0 +1,88 @@
+:root {
+  box-sizing: border-box;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: inherit;
+}
+
+:root {
+  /* Light Theme Variables */
+  --bg-primary: #F5F7FA;
+  /* Soft White - Main background */
+  --bg-secondary: #FFFFFF;
+  /* White - Card background */
+  --bg-card: #FFFFFF;
+  --header-bg: #0B1A30;
+  /* Dark Navy - Header/Sidebar */
+  --text-primary: #0B1A30;
+  /* Dark Navy - Main text */
+  --text-secondary: #3E4C59;
+  /* Graphite Gray - Secondary text */
+  --accent-color: #4A90E2;
+  /* Loopio Blue */
+  --accent-hover: #27D6C8;
+  /* Aqua Teal */
+  --border-color: #dfe6e9;
+  --shadow-sm: 0 4px 6px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 15px rgba(0, 0, 0, 0.05);
+
+  /* Status Colors */
+  --status-pending: #e17055;
+  --status-progress: #4A90E2;
+  /* Loopio Blue */
+  --status-resolved: #27D6C8;
+  /* Aqua Teal */
+  --status-closed: #b2bec3;
+}
+
+[data-theme='dark'] {
+  /* Dark Theme Variables */
+  --bg-primary: #0B1A30;
+  /* Dark Navy */
+  --bg-secondary: #1e272e;
+  /* Darker shade for cards */
+  --bg-card: #1e272e;
+  --header-bg: #0B1A30;
+  /* Dark Navy */
+  --text-primary: #F5F7FA;
+  /* Soft White */
+  --text-secondary: #b2bec3;
+  --accent-color: #4A90E2;
+  /* Loopio Blue */
+  --accent-hover: #27D6C8;
+  /* Aqua Teal */
+  --border-color: #3E4C59;
+  /* Graphite Gray */
+  --shadow-sm: 0 4px 6px rgba(0, 0, 0, 0.2);
+  --shadow-md: 0 4px 15px rgba(0, 0, 0, 0.3);
+}
+
+body {
+  margin: 0;
+  font-family: 'Inter', sans-serif;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  transition: background-color 0.3s, color 0.3s;
+  min-height: 100vh;
+}
+
+/* Global Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-primary);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border-color);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--text-secondary);
+}

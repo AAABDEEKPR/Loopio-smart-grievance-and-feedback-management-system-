@@ -21,7 +21,7 @@ const feedbackSchema = new mongoose.Schema({
     category: {
         type: String,
         required: true,
-        enum: ['Bug', 'Feature Request', 'Improvement', 'Other']
+        enum: ['Bug', 'Feature Request', 'Improvement', 'Other', 'Software Issue', 'HR Issue', 'Project Issue', 'Workplace Issue']
     },
     priority: {
         type: String,

@@ -12,11 +12,20 @@
     box-shadow: var(--shadow-sm);
 }
 
+.navbar-brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
 .navbar-brand h1 {
     margin: 0;
     font-size: 1.5rem;
-    color: var(--accent-color);
     font-weight: 800;
+    background: linear-gradient(to right, #0052CC, #00C7B7);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    letter-spacing: 0.5px;
 }
 
 .navbar-search {

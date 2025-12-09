@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { getFeedbacks, createFeedback, updateFeedback, addComment } = require('../controllers/feedbackController');
+const { getFeedbacks, createFeedback, updateFeedback, addComment, deleteFeedback } = require('../controllers/feedbackController');
 const { protect } = require('../middleware/authMiddleware');
 
 router.route('/')
@@ -8,7 +8,8 @@ router.route('/')
     .post(protect, createFeedback);
 
 router.route('/:id')
-    .put(protect, updateFeedback);
+    .put(protect, updateFeedback)
+    .delete(protect, deleteFeedback);
 
 router.route('/:id/comments')
     .post(protect, addComment);

@@ -56,6 +56,10 @@ const updateFeedback = async (req, res) => {
         }
 
         // Update fields
+        if (req.body.title) feedback.title = req.body.title;
+        if (req.body.description) feedback.description = req.body.description;
+        if (req.body.category) feedback.category = req.body.category;
+        if (req.body.priority) feedback.priority = req.body.priority;
         if (req.body.status) feedback.status = req.body.status;
         if (req.body.assignedTo !== undefined) feedback.assignedTo = req.body.assignedTo;
 
@@ -101,9 +105,35 @@ const addComment = async (req, res) => {
     }
 };
 
+// @desc    Delete feedback
+// @route   DELETE /api/feedbacks/:id
+// @access  Private (Owner/Admin)
+const deleteFeedback = async (req, res) => {
+    try {
+        const feedback = await Feedback.findById(req.params.id);
+
+        if (!feedback) {
+            return res.status(404).json({ message: 'Feedback not found' });
+        }
+
+        // Check if user is owner or admin
+        if (feedback.submittedBy.toString() !== req.user.id && req.user.role !== 'admin') {
+            return res.status(401).json({ message: 'User not authorized to delete this feedback' });
+        }
+
+        await feedback.deleteOne();
+
+        res.status(200).json({ id: req.params.id, message: 'Feedback deleted' });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Server error' });
+    }
+};
+
 module.exports = {
     getFeedbacks,
     createFeedback,
     updateFeedback,
-    addComment
+    addComment,
+    deleteFeedback
 };

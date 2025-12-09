@@ -1,22 +1,26 @@
 import React from 'react';
 import { useFeedback } from '../context/FeedbackContext';
-import './AnalyticsCharts.css';
+import './AdminAnalyticsChart.css';
 
-const AnalyticsCharts = () => {
+const AdminAnalyticsChart = () => {
     const { feedbacks } = useFeedback();
 
+    const safeFeedbacks = Array.isArray(feedbacks) ? feedbacks : [];
+
     // Calculate Status Distribution
-    const statusCounts = feedbacks.reduce((acc, fb) => {
-        acc[fb.status] = (acc[fb.status] || 0) + 1;
+    const statusCounts = safeFeedbacks.reduce((acc, fb) => {
+        const status = fb.status || 'Unknown';
+        acc[status] = (acc[status] || 0) + 1;
         return acc;
     }, {});
 
-    const total = feedbacks.length;
+    const total = safeFeedbacks.length;
     const statuses = ['Submitted', 'Pending', 'In Progress', 'Resolved', 'Closed'];
 
     // Calculate Category Distribution
-    const categoryCounts = feedbacks.reduce((acc, fb) => {
-        acc[fb.category] = (acc[fb.category] || 0) + 1;
+    const categoryCounts = safeFeedbacks.reduce((acc, fb) => {
+        const category = fb.category || 'Uncategorized';
+        acc[category] = (acc[category] || 0) + 1;
         return acc;
     }, {});
 
@@ -30,7 +34,6 @@ const AnalyticsCharts = () => {
                 <div className="bar-chart">
                     {statuses.map(status => {
                         const count = statusCounts[status] || 0;
-                        const percentage = total > 0 ? (count / total) * 100 : 0;
                         const height = total > 0 ? (count / maxCount) * 100 : 0;
 
                         return (
@@ -44,7 +47,7 @@ const AnalyticsCharts = () => {
                                         <span className="bar-value">{count}</span>
                                     </div>
                                 </div>
-                                <span className="bar-label">{status}</span>
+                                <span className={`bar-label ${status.toLowerCase().replace(' ', '-')}`}>{status}</span>
                             </div>
                         );
                     })}
@@ -74,4 +77,4 @@ const AnalyticsCharts = () => {
     );
 };
 
-export default AnalyticsCharts;
+export default AdminAnalyticsChart;

@@ -5,6 +5,7 @@ import { useFeedback } from '../context/FeedbackContext';
 import NotificationBell from './NotificationBell';
 import { IoSearchOutline } from "react-icons/io5";
 import './Navbar.css';
+import loopioLogo from '../assets/Loopio_logo_.png';
 
 const Navbar = ({ onProfileClick }) => {
     const { user, logout } = useAuth();
@@ -19,6 +20,9 @@ const Navbar = ({ onProfileClick }) => {
     return (
         <nav className="navbar">
             <div className="navbar-brand">
+                <div className="logo-icon">
+                    <img src={loopioLogo} alt="Loopio Logo" style={{ width: '32px', height: '32px', objectFit: 'contain' }} />
+                </div>
                 <h1>Loopio</h1>
             </div>
 

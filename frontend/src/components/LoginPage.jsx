@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from './AuthProvider';
 import { FaUser, FaEnvelope, FaLock } from 'react-icons/fa';
 import './LoginPage.css';
+import loopioLogo from '../assets/Loopio_logo_.png';
 
 const LoginPage = () => {
     const [isLogin, setIsLogin] = useState(true);
@@ -65,10 +66,19 @@ const LoginPage = () => {
     return (
         <div className="auth-container">
             <div className="auth-card">
-                <h2>{isLogin ? 'Welcome Back' : 'Create Account'}</h2>
-                <p className="subtitle">
-                    {isLogin ? 'Login to continue your journey' : 'Sign up to get started with Loopio'}
-                </p>
+                <div className="logo-container">
+                    <div className="logo-icon">
+                        <img src={loopioLogo} alt="Loopio Logo" style={{ width: '40px', height: '40px', objectFit: 'contain' }} />
+                    </div>
+                    <h1 className="brand-name">Loopio</h1>
+                </div>
+
+                <div className="header-text">
+                    <h2>{isLogin ? 'Welcome Back' : 'Create Account'}</h2>
+                    <p className="subtitle">
+                        {isLogin ? 'Login to continue your journey' : 'Sign up to get started with Loopio'}
+                    </p>
+                </div>
 
                 {error && <p className="error-message" style={{ color: 'red', marginBottom: '10px' }}>{error}</p>}
 

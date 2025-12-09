@@ -1,0 +1,108 @@
+/* UsersPage.css */
+
+/* Header Layout */
+.card-header-flex {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    /* Key for responsiveness */
+    gap: 20px;
+    margin-bottom: 24px;
+}
+
+.users-header-info h3 {
+    margin: 0;
+    font-size: 18px;
+    color: #fff;
+    font-weight: 700;
+}
+
+.users-header-info p {
+    margin: 5px 0 0;
+    font-size: 13px;
+    /* Slightly larger for readability */
+    color: var(--vision-text-muted, #A0AEC0);
+    display: flex;
+    align-items: center;
+}
+
+/* Actions Container (Search + Button) */
+.users-header-actions {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+/* Responsive Search Bar */
+.search-bar-container {
+    width: 250px;
+    /* Default desktop width */
+    transition: width 0.3s ease;
+}
+
+.search-input {
+    width: 100%;
+    background: #0B1A30;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #fff;
+    padding: 10px 16px;
+    border-radius: 12px;
+    outline: none;
+    font-size: 13px;
+    transition: all 0.3s ease;
+}
+
+.search-input:focus {
+    border-color: var(--vision-primary, #0075FF);
+    box-shadow: 0 0 0 2px rgba(0, 117, 255, 0.2);
+}
+
+/* Export Button - ensure it doesn't shrink */
+.btn-vision-primary {
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+/* Custom Scrollbar styles removed to match AssignDeveloperPage standard scrolling */
+
+/* Ensure no double borders at bottom */
+.table-container {
+    padding-bottom: 5px;
+    /* Spacing from bottom border */
+}
+
+/* --- Mobile Responsiveness --- */
+@media (max-width: 768px) {
+    .card-header-flex {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 16px;
+    }
+
+    .users-header-info {
+        width: 100%;
+    }
+
+    .users-header-actions {
+        width: 100%;
+        flex-direction: column;
+        /* Stack vertically on small screens */
+        align-items: stretch;
+        /* Full width items */
+        gap: 12px;
+    }
+
+    .search-bar-container {
+        width: 100%;
+        /* Full width search */
+        max-width: none;
+    }
+
+    .btn-vision-primary {
+        width: 100%;
+        /* Full width button */
+        justify-content: center;
+    }
+}

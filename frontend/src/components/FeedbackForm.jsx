@@ -3,7 +3,7 @@ import { useFeedback } from '../context/FeedbackContext';
 import './FeedbackForm.css';
 
 const FeedbackForm = ({ onClose, initialData = null }) => {
-    const { addFeedback } = useFeedback();
+    const { addFeedback, editFeedback } = useFeedback();
     const [formData, setFormData] = useState(initialData || {
         title: '',
         category: 'Software Issue',
@@ -20,9 +20,13 @@ const FeedbackForm = ({ onClose, initialData = null }) => {
         }));
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        addFeedback(formData);
+        if (initialData) {
+            await editFeedback(initialData._id, formData);
+        } else {
+            await addFeedback(formData);
+        }
         onClose();
     };
 

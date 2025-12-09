@@ -138,9 +138,48 @@ export const FeedbackProvider = ({ children }) => {
         }
     };
 
-    const deleteFeedback = (id) => {
-        // Not implemented in backend yet
-        setFeedbacks(prev => prev.filter(fb => fb._id !== id));
+    const editFeedback = async (id, updatedData) => {
+        const token = localStorage.getItem('token');
+        try {
+            const res = await fetch(`${API_URL}/${id}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${token}`
+                },
+                body: JSON.stringify(updatedData)
+            });
+            if (res.ok) {
+                const updatedFeedback = await res.json();
+                setFeedbacks(prev => prev.map(fb => fb._id === id ? updatedFeedback : fb));
+                return { success: true };
+            }
+        } catch (error) {
+            console.error('Error editing feedback:', error);
+        }
+        return { success: false };
+    };
+
+    const deleteFeedback = async (id) => {
+        const token = localStorage.getItem('token');
+        try {
+            const res = await fetch(`${API_URL}/${id}`, {
+                method: 'DELETE',
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
+
+            if (res.ok) {
+                setFeedbacks(prev => prev.filter(fb => fb._id !== id));
+            } else {
+                const data = await res.json();
+                alert(data.message || 'Failed to delete');
+            }
+        } catch (error) {
+            console.error('Error deleting feedback:', error);
+            alert('Error deleting feedback');
+        }
     };
 
     const updateUserRole = (userId, newRole) => {
@@ -151,7 +190,7 @@ export const FeedbackProvider = ({ children }) => {
     return (
         <FeedbackContext.Provider value={{
             feedbacks, users, searchQuery, setSearchQuery,
-            addFeedback, updateFeedbackStatus, assignDeveloper,
+            addFeedback, updateFeedbackStatus, assignDeveloper, editFeedback,
             addComment, deleteFeedback, updateUserRole,
             refreshFeedbacks: fetchFeedbacks
         }}>

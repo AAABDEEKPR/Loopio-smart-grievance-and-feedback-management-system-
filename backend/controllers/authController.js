@@ -1,5 +1,7 @@
 const User = require('../models/User');          // Importing the User model
 const jwt = require('jsonwebtoken');             // Importing JWT library
+const crypto = require('crypto');
+const sendEmail = require('../utils/sendEmail');
 
 // Function to generate JWT token
 const generateToken = (id) => {
@@ -91,28 +93,84 @@ const getMe = async (req, res) => {
 // @access  Private
 const updateUserProfile = async (req, res) => {
     try {
-        const user = await User.findById(req.user.id);     // Find the current logged-in user
+        const user = await User.findById(req.user.id);
 
         if (user) {
-            user.name = req.body.name || user.name;        // Update name
-            user.email = req.body.email || user.email;     // Update email
+            user.name = req.body.name || user.name;
+            user.email = req.body.email || user.email;
+            user.phone = req.body.phone || user.phone;
+            user.address = req.body.address || user.address;
 
-            if (req.body.password) {                       // If password provided, update it
-                user.password = req.body.password;
-            }
+            // Password update should be done via /change-password route for security
 
-            const updatedUser = await user.save();         // Save to database
+            const updatedUser = await user.save();
 
             res.json({
                 _id: updatedUser.id,
                 name: updatedUser.name,
                 email: updatedUser.email,
+                phone: updatedUser.phone,
+                address: updatedUser.address,
                 role: updatedUser.role,
-                token: generateToken(updatedUser.id)       // Give new token after updating
+                token: generateToken(updatedUser.id)
             });
         } else {
-            res.status(404).json({ message: 'User not found' }); // If user doesn't exist
+            res.status(404).json({ message: 'User not found' });
         }
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Server error' });
+    }
+};
+
+// @desc    Get all users (Admin only)
+// @route   GET /api/users
+// @access  Private (Admin)
+const getAllUsers = async (req, res) => {
+    try {
+        const users = await User.find({}).select('-password');
+        res.json(users);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Server error' });
+    }
+};
+
+// @desc    Change password
+// @route   PUT /api/users/password
+// @access  Private
+const changePassword = async (req, res) => {
+    const { oldPassword, newPassword } = req.body;
+
+    try {
+        const user = await User.findById(req.user.id);
+
+        if (user && (await user.comparePassword(oldPassword))) {
+            user.password = newPassword;
+            await user.save();
+            res.json({ message: 'Password updated successfully' });
+        } else {
+            res.status(401).json({ message: 'Invalid old password' });
+        }
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Server error' });
+    }
+};
+
+// @desc    Delete my account
+// @route   DELETE /api/users/me
+// @access  Private
+const deleteMyAccount = async (req, res) => {
+    try {
+        const user = await User.findById(req.user.id);
+
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+        await user.deleteOne();
+        res.json({ message: 'User deleted successfully' });
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: 'Server error' });
@@ -135,10 +193,101 @@ const getDevelopers = async (req, res) => {
     }
 };
 
+
+
+// @desc    Forgot Password
+// @route   POST /api/auth/forgotpassword
+// @access  Public
+const forgotPassword = async (req, res) => {
+    const { email } = req.body;
+
+    try {
+        const user = await User.findOne({ email });
+
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+        // Get reset token
+        const resetToken = user.getResetPasswordToken();
+
+        await user.save({ validateBeforeSave: false });
+
+        // Create reset URL
+        const resetUrl = `http://localhost:5173/reset-password/${resetToken}`;
+
+        const message = `You are receiving this email because you (or someone else) has requested the reset of a password. Please click on the link below to reset your password:\n\n${resetUrl}`;
+
+        try {
+            await sendEmail({
+                email: user.email,
+                subject: 'Password Reset Token',
+                message
+            });
+
+            res.status(200).json({ success: true, data: 'Email sent' });
+        } catch (error) {
+            console.error(error);
+            user.resetPasswordToken = undefined;
+            user.resetPasswordExpire = undefined;
+
+            await user.save({ validateBeforeSave: false });
+
+            return res.status(500).json({ message: 'Email could not be sent' });
+        }
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Server error' });
+    }
+};
+
+// @desc    Reset Password
+// @route   PUT /api/auth/resetpassword/:resettoken
+// @access  Public
+const resetPassword = async (req, res) => {
+    try {
+        // Get hashed token
+        const resetPasswordToken = crypto
+            .createHash('sha256')
+            .update(req.params.resettoken)
+            .digest('hex');
+
+        const user = await User.findOne({
+            resetPasswordToken,
+            resetPasswordExpire: { $gt: Date.now() }
+        });
+
+        if (!user) {
+            return res.status(400).json({ message: 'Invalid token' });
+        }
+
+        // Set new password
+        user.password = req.body.password;
+        user.resetPasswordToken = undefined;
+        user.resetPasswordExpire = undefined;
+
+        await user.save();
+
+        res.status(200).json({
+            success: true,
+            token: generateToken(user.id),
+            message: 'Password updated successfully'
+        });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Server error' });
+    }
+};
+
 module.exports = {
     registerUser,
     loginUser,
     getMe,
     updateUserProfile,
-    getDevelopers
+    getDevelopers,
+    getAllUsers,
+    changePassword,
+    deleteMyAccount,
+    forgotPassword,
+    resetPassword
 };

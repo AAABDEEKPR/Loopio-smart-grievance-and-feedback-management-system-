@@ -6,6 +6,7 @@ import FeedbackForm from './FeedbackForm';
 import FeedbackDetail from './FeedbackDetail';
 import NotificationBell from './NotificationBell';
 import UserAnalyticsChart from './UserAnalyticsChart';
+import FilterBar from './FilterBar';
 import {
     FaHome, FaUser, FaPlus, FaSignOutAlt, FaList, FaSearch,
     FaSun, FaMoon, FaFileAlt, FaRocket, FaCheckCircle, FaClock, FaEllipsisH, FaBars, FaTimes, FaTrash
@@ -86,11 +87,11 @@ const UserDashboard = ({ onProfileClick }) => {
                 </div>
 
                 <nav className="sidebar-nav" style={{ marginTop: '20px' }}>
-                    <a href="#" className="nav-item active">
+                    <a href="/user" className="nav-item active">
                         <div className="icon-box"><FaHome /></div>
                         <span>Dashboard</span>
                     </a>
-                    <a href="#" className="nav-item">
+                    <a href="/user/my-feedbacks" className="nav-item">
                         <div className="icon-box"><FaList /></div>
                         <span>My Feedbacks</span>
                     </a>
@@ -240,6 +241,10 @@ const UserDashboard = ({ onProfileClick }) => {
                                     <strong>{resolved} done</strong> this month
                                 </p>
                             </div>
+                        </div>
+
+                        <div style={{ padding: '0 20px 20px' }}>
+                            <FilterBar />
                         </div>
 
                         {myFeedbacks.length === 0 ? (

@@ -105,4 +105,23 @@
         /* Full width button */
         justify-content: center;
     }
+
+    /* Fix double scrollbar specific to Users Page */
+    .users-page-card {
+        padding: 15px;
+        overflow: hidden !important;
+    }
+
+    .users-page-card .table-container {
+        width: 100%;
+        overflow-x: auto;
+        padding-bottom: 5px;
+    }
+
+    /* Aggressively remove scroll from the table element itself */
+    .users-page-card .vision-table {
+        overflow: visible !important;
+        display: table !important;
+        width: 100%;
+    }
 }

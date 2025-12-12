@@ -23,7 +23,7 @@ const UsersPage = () => {
     };
 
     return (
-        <div className="vision-card" style={{ marginTop: '20px' }}>
+        <div className="vision-card users-page-card" style={{ marginTop: '20px' }}>
             <div className="card-header-flex">
                 <div className="users-header-info">
                     <h3>Users Management</h3>
@@ -49,7 +49,7 @@ const UsersPage = () => {
                 </div>
             </div>
 
-            <div className="table-container" style={{ overflowX: 'auto', minHeight: '400px' }}>
+            <div className="table-container" style={{ overflowX: 'auto' }}>
                 <table className="vision-table">
                     <thead>
                         <tr>

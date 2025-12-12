@@ -1,0 +1,61 @@
+.filter-bar-container {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+}
+
+.filter-select {
+    padding: 8px 12px;
+    border-radius: 8px;
+    border: 1px solid var(--vision-card-border);
+    background-color: rgba(255, 255, 255, 0.05);
+    /* Glassy background */
+    color: var(--vision-text-main);
+    outline: none;
+    font-size: 14px;
+    cursor: pointer;
+    min-width: 140px;
+    font-family: inherit;
+    transition: all 0.3s ease;
+}
+
+.filter-select:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    border-color: var(--vision-primary);
+}
+
+.filter-select option {
+    background-color: var(--vision-bg);
+    /* Use theme background */
+    color: var(--vision-text-main);
+    padding: 10px;
+}
+
+/* Specific styling for Light Mode if needed */
+[data-theme='light'] .filter-select {
+    background-color: #f8fafc;
+    border: 1px solid #e2e8f0;
+    color: #1e293b;
+}
+
+[data-theme='light'] .filter-select option {
+    background-color: #ffffff;
+    color: #1e293b;
+}
+
+.btn-clear-filters {
+    padding: 8px 16px;
+    border-radius: 8px;
+    border: 1px solid #FF5C5C;
+    background-color: transparent;
+    color: #FF5C5C;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.btn-clear-filters:hover {
+    background-color: rgba(255, 92, 92, 0.1);
+}

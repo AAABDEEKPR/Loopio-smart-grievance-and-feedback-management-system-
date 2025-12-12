@@ -3,10 +3,13 @@ import { useFeedback } from '../context/FeedbackContext';
 import { useAuth } from './AuthProvider';
 import './FeedbackDetail.css';
 
-const FeedbackDetail = ({ feedback, onClose }) => {
-    const { addComment } = useFeedback();
+const FeedbackDetail = ({ feedback: initialFeedback, onClose }) => {
+    const { feedbacks, addComment, deleteComment } = useFeedback();
     const { user: currentUser } = useAuth();
     const [commentText, setCommentText] = useState('');
+
+    // Get live feedback object from context to ensure updates (like comment deletion) are reflected immediately
+    const feedback = feedbacks.find(f => f._id === initialFeedback._id) || initialFeedback;
 
     const assignedDev = feedback.assignedTo; // Populated object or null
 
@@ -51,6 +54,39 @@ const FeedbackDetail = ({ feedback, onClose }) => {
                         <p>{feedback.description}</p>
                     </div>
 
+                    {feedback.attachment && (
+                        <div className="attachment-box" style={{ marginTop: '20px' }}>
+                            <h3 style={{ color: 'black' }}>Attachment</h3>
+                            <div style={{ marginTop: '10px' }}>
+                                {/* Check if it's an image */}
+                                {feedback.attachment.match(/\.(jpeg|jpg|png|gif)$/i) ? (
+                                    <div style={{ borderRadius: '12px', overflow: 'hidden', border: '1px solid var(--vision-card-border)' }}>
+                                        <img
+                                            src={`http://localhost:5000/${feedback.attachment.replace(/\\/g, "/")}`}
+                                            alt="Attachment"
+                                            style={{ maxWidth: '100%', maxHeight: '400px', display: 'block' }}
+                                        />
+                                    </div>
+                                ) : (
+                                    <a
+                                        href={`http://localhost:5000/${feedback.attachment.replace(/\\/g, "/")}`}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        style={{
+                                            color: 'var(--vision-primary)',
+                                            textDecoration: 'underline',
+                                            display: 'flex',
+                                            alignItems: 'center',
+                                            gap: '5px'
+                                        }}
+                                    >
+                                        View Attached File
+                                    </a>
+                                )}
+                            </div>
+                        </div>
+                    )}
+
                     <div className="comments-section">
                         <h3>Discussion</h3>
                         <div className="comments-list">
@@ -63,6 +99,15 @@ const FeedbackDetail = ({ feedback, onClose }) => {
                                             <span className="author">{comment.author}</span>
                                             <span className="role-tag">{comment.role}</span>
                                             <span className="time">{new Date(comment.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
+                                            {(currentUser.role === 'admin' || currentUser.name === comment.author) && (
+                                                <button
+                                                    className="delete-comment-btn"
+                                                    onClick={() => deleteComment(feedback._id, comment._id)}
+                                                    title="Delete comment"
+                                                >
+                                                    <svg stroke="currentColor" fill="currentColor" strokeWidth="0" viewBox="0 0 448 512" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M432 32H312l-9.4-18.7A24 24 0 0 0 281.1 0H166.8a23.72 23.72 0 0 0-21.4 13.3L136 32H16A16 16 0 0 0 0 48v32a16 16 0 0 0 16 16h416a16 16 0 0 0 16-16V48a16 16 0 0 0-16-16zM53.2 467a48 48 0 0 0 47.9 45h245.8a48 48 0 0 0 47.9-45L416 128H32z"></path></svg>
+                                                </button>
+                                            )}
                                         </div>
                                         <p>{comment.text}</p>
                                     </div>

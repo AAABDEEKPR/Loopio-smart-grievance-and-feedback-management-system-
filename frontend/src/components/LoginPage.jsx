@@ -118,6 +118,17 @@ const LoginPage = () => {
                         />
                     </div>
 
+                    {isLogin && (
+                        <div style={{ textAlign: 'right', marginBottom: '15px' }}>
+                            <span
+                                onClick={() => navigate('/forgot-password')}
+                                style={{ color: '#007bff', cursor: 'pointer', fontSize: '14px' }}
+                            >
+                                Forgot Password?
+                            </span>
+                        </div>
+                    )}
+
                     {!isLogin && (
                         <select
                             className="select-role"

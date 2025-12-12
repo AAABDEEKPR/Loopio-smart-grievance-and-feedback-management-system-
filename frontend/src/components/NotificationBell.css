@@ -118,3 +118,33 @@
     color: #888;
     font-size: 0.9rem;
 }
+
+/* Mobile Responsive Fix: Centered & Compact Dropdown */
+@media (max-width: 480px) {
+
+    /* Prevent bell transform from creating a new formatting context that breaks fixed positioning */
+    .notification-bell,
+    .notification-bell:hover {
+        transform: none !important;
+    }
+
+    .notification-dropdown {
+        position: fixed;
+        top: calc(50% + 40px);
+        /* User requested move down ~40px */
+        left: 50%;
+        transform: translate(-50%, -50%) !important;
+        /* Center screen */
+        width: 280px;
+        /* "Choto" size */
+        max-width: 90vw;
+        max-height: 50vh;
+        /* Prevent too tall */
+        min-width: unset;
+        z-index: 2000;
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8);
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        overflow-y: auto;
+        /* Scroll if content overflows height */
+    }
+}

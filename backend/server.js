@@ -1,37 +1,61 @@
-const express = require('express');              // Import Express framework to create server and routes
-const mongoose = require('mongoose');            // Import Mongoose to connect with MongoDB
-const cors = require('cors');                    // Import CORS to allow frontend ↔ backend communication
-const dotenv = require('dotenv');                // Import dotenv to load environment variables from .env file
+const express = require('express');
+const mongoose = require('mongoose');
+const cors = require('cors');
+const dotenv = require('dotenv');
+const helmet = require('helmet');
+const morgan = require('morgan');
+const rateLimit = require('express-rate-limit');
+const { errorHandler } = require('./middleware/errorMiddleware');
 
-dotenv.config();                                 // Load variables from .env (PORT, MONGO_URI, JWT_SECRET)
+dotenv.config();
 
-const app = express();                           // Create Express app
-const PORT = process.env.PORT || 5000;           // Choose PORT from .env or use 5000 as default
+const app = express();
+const PORT = process.env.PORT || 5000;
+
+//  SECURITY MIDDLEWARE
+app.use(helmet({
+    crossOriginResourcePolicy: false,
+}));
+app.use(morgan('dev'));
+
+//  RATE LIMITING
+const limiter = rateLimit({
+    windowMs: 10 * 60 * 1000, // 10 minutes
+    max: 1000, // Limit each IP to 1000 requests per 10 mins
+    standardHeaders: true,
+    legacyHeaders: false,
+});
+app.use(limiter);
 
 //  MIDDLEWARE 
-app.use(cors());                                 // Enable CORS -> allows frontend to access backend
-app.use(express.json());                         // Enable JSON parsing -> allows reading request body
+app.use(cors());
+app.use(express.json());
 
 // DATABASE CONNECTION 
-mongoose.connect(                         //moongoose is a library that helps to connect with mongodb
-    process.env.MONGO_URI || 'mongodb://127.0.0.1:27017/feedback_app'  
-)                                                // Connect to MongoDB using .env or fallback URL
-.then(() => console.log('MongoDB Connected Successfully'))   // If connected successfully
-.catch(err => {                                  // If database connection fails
-    console.error('MongoDB Connection Error:', err.message); // Print error message
-    console.log('Make sure MongoDB is installed and running!'); // Extra help message
-});
+mongoose.connect(
+    process.env.MONGO_URI || 'mongodb://127.0.0.1:27017/feedback_app'
+)
+    .then(() => console.log('MongoDB Connected Successfully'))
+    .catch(err => {
+        console.error('MongoDB Connection Error:', err.message);
+        console.log('Make sure MongoDB is installed and running!');
+    });
 
 //  ROUTES 
-app.use('/api/auth', require('./routes/auth'));       // All /api/auth routes handled by routes/auth.js
-app.use('/api/feedbacks', require('./routes/feedback')); // All /api/feedbacks routes handled by routes/feedback.js
+app.use('/api/auth', require('./routes/auth'));
+app.use('/api/users', require('./routes/users'));
+app.use('/api/feedbacks', require('./routes/feedback'));
+app.use('/api/notifications', require('./routes/notification'));
+app.use('/uploads', express.static('uploads'));
 
 //  DEFAULT ROUTE 
-app.get('/', (req, res) => {                   // Simple test route
-    res.send('Feedback API is running');       // Response when visiting home URL
+app.get('/', (req, res) => {
+    res.send('Feedback API is running');
 });
 
+//  ERROR HANDLER
+app.use(errorHandler);
 
-app.listen(PORT, () => {                       // Start the server
-    console.log(`Server running on port ${PORT}`);  // Show message in terminal
+app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
 });

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import LoginPage from './components/LoginPage';
 import UserDashboard from './components/UserDashboard';
+import MyFeedbacksPage from './components/MyFeedbacksPage';
 import DeveloperDashboard from './components/DeveloperDashboard';
 import { useAuth } from './components/AuthProvider';
 
@@ -13,6 +14,9 @@ import AllFeedbacksPage from './components/AllFeedbacksPage';
 import UserProfile from './components/UserProfile';
 
 import HomePage from './components/HomePage';
+
+import ForgotPassword from './components/ForgotPassword';
+import ResetPassword from './components/ResetPassword';
 
 const ProtectedRoute = ({ children, role }) => {
   const { user } = useAuth();
@@ -33,11 +37,21 @@ const App = () => {
     <Routes>
       <Route path="/" element={<HomePage />} />
       <Route path="/login" element={<LoginPage />} />
+      <Route path="/forgot-password" element={<ForgotPassword />} />
+      <Route path="/reset-password/:resettoken" element={<ResetPassword />} />
       <Route
         path="/user"
         element={
           <ProtectedRoute role="user">
             <UserDashboard />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/user/my-feedbacks"
+        element={
+          <ProtectedRoute role="user">
+            <MyFeedbacksPage />
           </ProtectedRoute>
         }
       />

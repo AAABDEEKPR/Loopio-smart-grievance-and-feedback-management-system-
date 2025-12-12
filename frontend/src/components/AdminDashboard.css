@@ -541,6 +541,32 @@
 
     .vision-main {
         margin-left: 0;
+        padding: 15px;
+        /* Reduce padding on mobile */
+        overflow-x: hidden;
+        /* Prevent page scroll */
+    }
+
+    /* Fix for Assign Developer Page double scroll */
+    .assign-dev-card {
+        padding: 15px;
+        /* Reduce card padding */
+        overflow: hidden !important;
+        /* Force hide outer scroll */
+    }
+
+    .assign-dev-card .table-container {
+        width: 100%;
+        overflow-x: auto;
+        padding-bottom: 10px;
+        /* Space for scrollbar */
+    }
+
+    /* Aggressively remove scroll from the table element itself */
+    .assign-dev-card .vision-table {
+        overflow: visible !important;
+        display: table !important;
+        width: 100%;
     }
 }
 

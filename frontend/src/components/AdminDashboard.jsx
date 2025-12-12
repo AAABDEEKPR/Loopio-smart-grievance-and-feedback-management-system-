@@ -2,20 +2,21 @@ import React, { useState } from 'react';
 import { useFeedback } from '../context/FeedbackContext';
 import AdminAnalyticsChart from './AdminAnalyticsChart';
 import FeedbackDetail from './FeedbackDetail';
+import FilterBar from './FilterBar';
 import {
     FaFileAlt, FaExclamationTriangle, FaRocket, FaCheckCircle, FaArrowUp, FaCheckCircle as FaCheckCircleFilled
 } from 'react-icons/fa';
 import './AdminDashboard.css';
 
 const AdminDashboard = () => {
-    const { feedbacks, users } = useFeedback();
+    const { feedbacks, users, analytics, notifications } = useFeedback();
     const [selectedFeedback, setSelectedFeedback] = useState(null);
 
-    // Analytics
-    const total = Array.isArray(feedbacks) ? feedbacks.length : 0;
-    const pending = Array.isArray(feedbacks) ? feedbacks.filter(f => f.status === 'Pending' || f.status === 'Submitted').length : 0;
-    const progress = Array.isArray(feedbacks) ? feedbacks.filter(f => f.status === 'In Progress' || f.status === 'Working').length : 0;
-    const completed = Array.isArray(feedbacks) ? feedbacks.filter(f => f.status === 'Resolved' || f.status === 'Closed').length : 0;
+    // Analytics from Backend
+    const total = analytics?.total || 0;
+    const pending = (analytics?.status?.['Submitted'] || 0) + (analytics?.status?.['Pending'] || 0);
+    const progress = (analytics?.status?.['In Progress'] || 0) + (analytics?.status?.['Working'] || 0);
+    const completed = (analytics?.status?.['Resolved'] || 0) + (analytics?.status?.['Closed'] || 0);
 
     // Filter recent feedbacks for the dashboard view
     const recentFeedbacks = Array.isArray(feedbacks) ? feedbacks.slice(0, 5) : [];
@@ -94,6 +95,10 @@ const AdminDashboard = () => {
                                 <strong>{recentFeedbacks.length} items</strong> shown
                             </p>
                         </div>
+
+                    </div>
+                    <div style={{ padding: '0 20px' }}>
+                        <FilterBar />
                     </div>
 
                     <div className="table-container" style={{ overflowX: 'auto' }}>
@@ -131,24 +136,21 @@ const AdminDashboard = () => {
                     <div className="vision-card">
                         <h4 className="side-card-title">Notifications</h4>
                         <div style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
-                            <div className="quick-assign-item">
-                                <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
-                                    <div style={{ width: '8px', height: '8px', background: '#0075FF', borderRadius: '50%' }}></div>
-                                    <div className="quick-assign-info">
-                                        <p>New feedback submitted</p>
-                                        <span>2 mins ago</span>
+                            {notifications && notifications.length > 0 ? (
+                                notifications.slice(0, 3).map(note => (
+                                    <div className="quick-assign-item" key={note._id}>
+                                        <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
+                                            <div style={{ width: '8px', height: '8px', background: note.type === 'alert' ? '#FF5C5C' : '#0075FF', borderRadius: '50%' }}></div>
+                                            <div className="quick-assign-info">
+                                                <p>{note.message}</p>
+                                                <span>{new Date(note.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
+                                            </div>
+                                        </div>
                                     </div>
-                                </div>
-                            </div>
-                            <div className="quick-assign-item">
-                                <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
-                                    <div style={{ width: '8px', height: '8px', background: '#01B574', borderRadius: '50%' }}></div>
-                                    <div className="quick-assign-info">
-                                        <p>Project #424 completed</p>
-                                        <span>1 hour ago</span>
-                                    </div>
-                                </div>
-                            </div>
+                                ))
+                            ) : (
+                                <p style={{ fontSize: '12px', color: '#A0AEC0' }}>No new notifications</p>
+                            )}
                         </div>
                     </div>
 

@@ -21,6 +21,19 @@ const AssignDeveloperPage = () => {
     const assignableFeedbacks = feedbacks.filter(fb => fb.status !== 'Closed' && fb.status !== 'Resolved');
 
     const handleFeedbackSelect = (devId, feedbackId) => {
+        // Find the selected feedback
+        const selectedFb = feedbacks.find(fb => fb._id === feedbackId);
+
+        // Check if already assigned
+        if (selectedFb && selectedFb.assignedTo) {
+            const assigneeName = selectedFb.assignedTo.name || 'another developer';
+            setToast(`Task already assigned to ${assigneeName}`);
+
+            // Clear toast after 3s
+            setTimeout(() => setToast(null), 3000);
+            return; // Prevent selection
+        }
+
         setSelectedFeedbackMap(prev => ({
             ...prev,
             [devId]: feedbackId
@@ -54,7 +67,7 @@ const AssignDeveloperPage = () => {
     };
 
     return (
-        <div className="vision-card" style={{ marginTop: '20px', position: 'relative' }}>
+        <div className="vision-card assign-dev-card" style={{ marginTop: '20px', position: 'relative' }}>
             {/* Toast Notification */}
             {toast && (
                 <div className="toast-notification">
@@ -71,7 +84,7 @@ const AssignDeveloperPage = () => {
                 </div>
             </div>
 
-            <div className="table-container" style={{ overflowX: 'auto', minHeight: '400px' }}>
+            <div className="table-container" style={{ overflowX: 'auto' }}>
                 <table className="vision-table">
                     <thead>
                         <tr>

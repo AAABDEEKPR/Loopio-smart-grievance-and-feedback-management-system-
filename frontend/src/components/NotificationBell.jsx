@@ -1,31 +1,18 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { FaBell } from 'react-icons/fa';
+import { useFeedback } from '../context/FeedbackContext';
 import './NotificationBell.css';
 
-// Mock function to fetch notification count (could be replaced with real API)
-const fetchNotifications = () => {
-    // For demo, return a list of mock notifications
-    const mocks = [
-        "New feedback assigned to you",
-        "Status updated on 'Login Bug'",
-        "New comment on 'Dark Mode'",
-        "System maintenance scheduled"
-    ];
-    // Randomly pick some
-    return mocks.slice(0, Math.floor(Math.random() * 5));
-};
-
 const NotificationBell = () => {
-    const [notifications, setNotifications] = useState([]);
+    const { notifications, markNotificationAsRead, refreshNotifications } = useFeedback();
     const [isOpen, setIsOpen] = useState(false);
     const dropdownRef = useRef(null);
 
+    // Poll for notifications via context refresh
     useEffect(() => {
-        const updateNotifications = () => setNotifications(fetchNotifications());
-        updateNotifications();
-        const interval = setInterval(updateNotifications, 30000); // refresh every 30s
+        const interval = setInterval(refreshNotifications, 15000);
         return () => clearInterval(interval);
-    }, []);
+    }, [refreshNotifications]);
 
     // Close dropdown when clicking outside
     useEffect(() => {
@@ -40,18 +27,38 @@ const NotificationBell = () => {
 
     const toggleDropdown = () => setIsOpen(!isOpen);
 
+    // Calculate unread count
+    const unreadCount = notifications ? notifications.filter(n => !n.read).length : 0;
+
     return (
         <div className="notification-bell" onClick={toggleDropdown} ref={dropdownRef}>
             <FaBell size={20} />
-            {notifications.length > 0 && <span className="badge">{notifications.length}</span>}
+            {unreadCount > 0 && <span className="badge">{unreadCount}</span>}
 
             {isOpen && (
                 <div className="notification-dropdown">
                     <div className="notification-header">Notifications</div>
-                    {notifications.length > 0 ? (
+                    {notifications && notifications.length > 0 ? (
                         <ul className="notification-list">
-                            {notifications.map((note, index) => (
-                                <li key={index} className="notification-item">{note}</li>
+                            {notifications.map((note) => (
+                                <li
+                                    key={note._id}
+                                    className={`notification-item ${note.read ? 'read' : 'unread'}`}
+                                    onClick={(e) => { e.stopPropagation(); markNotificationAsRead(note._id); }}
+                                    style={{ opacity: note.read ? 0.6 : 1, position: 'relative' }}
+                                >
+                                    {note.message}
+                                    {!note.read && (
+                                        <span style={{
+                                            height: '8px',
+                                            width: '8px',
+                                            backgroundColor: '#00D9F4',
+                                            borderRadius: '50%',
+                                            display: 'inline-block',
+                                            marginLeft: '10px'
+                                        }}></span>
+                                    )}
+                                </li>
                             ))}
                         </ul>
                     ) : (

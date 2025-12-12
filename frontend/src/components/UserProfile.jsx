@@ -8,6 +8,8 @@ const UserProfile = ({ onClose }) => {
     const [formData, setFormData] = useState({
         name: user.name,
         email: user.email,
+        phone: user.phone || '',
+        address: user.address || '',
         password: ''
     });
     const [message, setMessage] = useState('');
@@ -68,6 +70,28 @@ const UserProfile = ({ onClose }) => {
                                     />
                                 </div>
                                 <div className="detail-group">
+                                    <label>Phone Number</label>
+                                    <input
+                                        type="text"
+                                        name="phone"
+                                        value={formData.phone}
+                                        onChange={handleChange}
+                                        className="edit-input"
+                                        placeholder="+88017..."
+                                    />
+                                </div>
+                                <div className="detail-group">
+                                    <label>Address</label>
+                                    <input
+                                        type="text"
+                                        name="address"
+                                        value={formData.address}
+                                        onChange={handleChange}
+                                        className="edit-input"
+                                        placeholder="Dhaka, Bangladesh"
+                                    />
+                                </div>
+                                <div className="detail-group">
                                     <label>New Password (leave blank to keep current)</label>
                                     <input
                                         type="password"
@@ -89,6 +113,18 @@ const UserProfile = ({ onClose }) => {
                                     <label>Email Address</label>
                                     <p>{user.email}</p>
                                 </div>
+                                {user.phone && (
+                                    <div className="detail-group">
+                                        <label>Phone Number</label>
+                                        <p>{user.phone}</p>
+                                    </div>
+                                )}
+                                {user.address && (
+                                    <div className="detail-group">
+                                        <label>Address</label>
+                                        <p>{user.address}</p>
+                                    </div>
+                                )}
                                 <div className="detail-group">
                                     <label>Role</label>
                                     <span className="role-badge">{user.role}</span>

@@ -45,7 +45,30 @@
     justify-content: space-between;
     gap: 16px;
     flex-wrap: wrap;
+    position: relative;
+    /* Ensure it layers correctly */
+    z-index: 20;
+    /* Above regular content */
 }
+
+/* ... existing styles ... */
+
+/* Force horizontal row on mobile (User wants side-by-side) */
+.status-actions {
+    flex-direction: row !important;
+    align-items: center !important;
+    gap: 8px !important;
+    flex-wrap: nowrap !important;
+}
+
+.status-select,
+.date-input {
+    width: auto !important;
+    min-width: 90px !important;
+    flex: 1 !important;
+    max-width: none !important;
+}
+
 
 .header-left {
     display: flex;
@@ -594,6 +617,84 @@
     .quick-action-btn {
         flex: initial;
         width: auto;
+    }
+}
+
+/* Mobile Adjustments (Max 480px) */
+@media (max-width: 480px) {
+    .header-actions {
+        flex-wrap: wrap;
+        justify-content: center;
+        width: 100%;
+    }
+
+    .search-bar {
+        width: 100%;
+        max-width: 100%;
+        order: 1;
+        margin-bottom: 10px;
+    }
+
+    /* Force horizontal row with better spacing */
+    .status-actions {
+        flex-direction: row !important;
+        align-items: center !important;
+        gap: 12px !important;
+        /* Proper spacing */
+        flex-wrap: nowrap !important;
+    }
+
+    /* Optimize column widths for mobile */
+    .vision-table th:nth-child(1) {
+        width: 25% !important;
+    }
+
+    .vision-table th:nth-child(2) {
+        width: 15% !important;
+    }
+
+    .vision-table th:nth-child(3) {
+        width: 15% !important;
+    }
+
+    .vision-table th:nth-child(4) {
+        width: 45% !important;
+        padding-left: 15px !important;
+        /* Add gap between Status and Action */
+    }
+
+    .vision-table td:nth-child(4) {
+        padding-left: 15px !important;
+        /* Apply to data cells too */
+    }
+
+    .status-select,
+    .date-input {
+        width: auto !important;
+        min-width: 90px !important;
+        flex: 1 !important;
+        max-width: none !important;
+    }
+
+    /* FIX: Remove right-side space by pulling table to edges */
+    .table-responsive {
+        width: calc(100% + 30px);
+        margin-left: -15px;
+        margin-right: -15px;
+        border-radius: 0;
+    }
+
+    /* Force Table Element NOT to scroll itself */
+    .table-responsive .vision-table {
+        overflow: visible !important;
+        display: table !important;
+        width: 100%;
+    }
+
+    .vision-card {
+        padding: 15px;
+        overflow: hidden;
+        /* Contain the negative margins */
     }
 }
 

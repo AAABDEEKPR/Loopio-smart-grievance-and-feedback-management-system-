@@ -233,3 +233,22 @@
     background-color: rgba(0, 0, 0, 0.05);
     /* Darker track for light mode */
 }
+
+/* Responsive Scroll for Mobile */
+@media (max-width: 768px) {
+    .analytics-charts {
+        /* Reset previous container scroll */
+        overflow-x: visible;
+    }
+
+    .chart-container {
+        overflow-x: auto;
+        padding-bottom: 10px;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .bar-chart {
+        min-width: 500px;
+        /* Force chart to be wide enough to scroll */
+    }
+}

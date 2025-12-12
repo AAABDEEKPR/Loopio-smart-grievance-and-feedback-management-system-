@@ -1,31 +1,102 @@
-import React from 'react';
-import { FaHammer } from 'react-icons/fa';
+import React, { useState } from 'react';
+import { useFeedback } from '../context/FeedbackContext';
+import { FaEye, FaSort, FaFilter, FaCalendarAlt } from 'react-icons/fa';
+import FeedbackDetail from './FeedbackDetail';
 
 const AllFeedbacksPage = () => {
+    const { feedbacks } = useFeedback();
+    const [selectedFeedback, setSelectedFeedback] = useState(null);
+    const [filterStatus, setFilterStatus] = useState('All');
+
+    const filteredFeedbacks = filterStatus === 'All'
+        ? feedbacks
+        : feedbacks.filter(fb => fb.status === filterStatus);
+
     return (
-        <div style={{
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            justifyContent: 'center',
-            height: '60vh',
-            color: '#fff',
-            textAlign: 'center'
-        }}>
-            <div style={{
-                fontSize: '48px',
-                marginBottom: '20px',
-                color: '#0075FF',
-                background: 'rgba(0, 117, 255, 0.1)',
-                padding: '20px',
-                borderRadius: '50%'
-            }}>
-                <FaHammer />
+        <div className="vision-card table-card" style={{ height: '100%', overflow: 'hidden', display: 'flex', flexDirection: 'column' }}>
+            <div className="card-header-flex" style={{ marginBottom: '20px' }}>
+                <div>
+                    <h3>All Feedbacks</h3>
+                    <p className="card-subtitle">Manage all system feedback</p>
+                </div>
+                <div className="filter-box">
+                    <FaFilter style={{ marginRight: '8px', color: 'var(--text-secondary)' }} />
+                    <select
+                        value={filterStatus}
+                        onChange={(e) => setFilterStatus(e.target.value)}
+                        style={{
+                            background: 'transparent',
+                            border: 'none',
+                            color: 'var(--text-primary)',
+                            outline: 'none',
+                            cursor: 'pointer'
+                        }}
+                    >
+                        <option value="All">All Status</option>
+                        <option value="Submitted">Submitted</option>
+                        <option value="In Progress">In Progress</option>
+                        <option value="Resolved">Resolved</option>
+                    </select>
+                </div>
             </div>
-            <h2>Page Under Construction</h2>
-            <p style={{ color: '#A0AEC0', maxWidth: '400px' }}>
-                This page is currently being built. Check back soon for the full feedback management interface!
-            </p>
+
+            <div className="table-responsive" style={{ flex: 1, overflowY: 'auto' }}>
+                <table className="vision-table">
+                    <thead>
+                        <tr>
+                            <th>TITLE</th>
+                            <th>SUBMITTED BY</th>
+                            <th>STATUS</th>
+                            <th>PRIORITY</th>
+                            <th>ETA <FaCalendarAlt style={{ fontSize: '10px', marginLeft: '5px' }} /></th>
+                            <th>ACTIONS</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {filteredFeedbacks.map(fb => (
+                            <tr key={fb._id} onClick={() => setSelectedFeedback(fb)} className="clickable-row">
+                                <td style={{ fontWeight: 500 }}>{fb.title}</td>
+                                <td>{fb.submittedBy?.name || 'Unknown'}</td>
+                                <td>
+                                    <span className={`status-badge ${fb.status.toLowerCase().replace(' ', '-')}`}>
+                                        {fb.status}
+                                    </span>
+                                </td>
+                                <td>
+                                    <span className={`priority-badge ${fb.priority.toLowerCase()}`}>
+                                        {fb.priority}
+                                    </span>
+                                </td>
+                                <td>
+                                    {fb.estimatedResolutionDate ? (
+                                        <span style={{
+                                            color: '#00D9F4',
+                                            fontWeight: '600',
+                                            fontSize: '13px'
+                                        }}>
+                                            {new Date(fb.estimatedResolutionDate).toLocaleDateString()}
+                                        </span>
+                                    ) : (
+                                        <span style={{ color: 'var(--text-secondary)', fontSize: '12px' }}>Not Set</span>
+                                    )}
+                                </td>
+                                <td>
+                                    <button className="btn-icon" title="View Details">
+                                        <FaEye />
+                                    </button>
+                                </td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            </div>
+
+            {selectedFeedback && (
+                <FeedbackDetail
+                    feedback={selectedFeedback}
+                    onClose={() => setSelectedFeedback(null)}
+                />
+            )}
         </div>
     );
 };

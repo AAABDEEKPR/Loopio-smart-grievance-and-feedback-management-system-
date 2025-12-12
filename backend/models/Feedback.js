@@ -23,6 +23,9 @@ const feedbackSchema = new mongoose.Schema({
         required: true,
         enum: ['Bug', 'Feature Request', 'Improvement', 'Other', 'Software Issue', 'HR Issue', 'Project Issue', 'Workplace Issue']
     },
+    attachment: {
+        type: String // Path to the uploaded file
+    },
     priority: {
         type: String,
         required: true,
@@ -43,6 +46,9 @@ const feedbackSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
         default: null
+    },
+    estimatedResolutionDate: {
+        type: Date
     },
     comments: [commentSchema]
 }, {

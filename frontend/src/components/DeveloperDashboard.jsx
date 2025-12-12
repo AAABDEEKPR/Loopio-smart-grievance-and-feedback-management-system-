@@ -2,9 +2,11 @@ import React, { useState } from 'react';
 import { useFeedback } from '../context/FeedbackContext';
 import { useAuth } from './AuthProvider';
 import { useTheme } from '../context/ThemeContext';
+
 import FeedbackDetail from './FeedbackDetail';
 import NotificationBell from './NotificationBell';
 import DeveloperProductivityChart from './DeveloperProductivityChart';
+import FilterBar from './FilterBar';
 import {
     FaHome, FaList, FaUser, FaSignOutAlt, FaCheckCircle, FaExclamationTriangle,
     FaRocket, FaClock, FaBars, FaTimes, FaChartLine, FaBolt, FaHistory, FaThumbsUp,
@@ -262,6 +264,9 @@ const DeveloperDashboard = ({ onProfileClick }) => {
                                     </p>
                                 </div>
                             </div>
+                            <div style={{ marginBottom: '15px' }}>
+                                <FilterBar />
+                            </div>
 
                             {myTasks.length === 0 ? (
                                 <div className="empty-state">
@@ -282,7 +287,9 @@ const DeveloperDashboard = ({ onProfileClick }) => {
                                             {myTasks.map((fb) => (
                                                 <tr key={fb._id} onClick={() => setSelectedFeedback(fb)} className="clickable-row">
                                                     <td className="company-cell">
-                                                        <div className="logo-box slack">T</div>
+                                                        <div className="logo-box slack">
+                                                            {fb.submittedBy ? fb.submittedBy.name.charAt(0).toUpperCase() : 'U'}
+                                                        </div>
                                                         <span className="title-text">{fb.title}</span>
                                                     </td>
                                                     <td>
@@ -300,16 +307,40 @@ const DeveloperDashboard = ({ onProfileClick }) => {
                                                                 <button className="btn-text danger-text" onClick={() => handleReject(fb._id)}>REJECT</button>
                                                             </div>
                                                         ) : (
-                                                            <select
-                                                                value={fb.status}
-                                                                onChange={(e) => handleStatusChange(fb._id, e.target.value)}
-                                                                className="status-select"
-                                                                disabled={fb.status === 'Closed'}
-                                                            >
-                                                                <option value="In Progress">In Progress</option>
-                                                                <option value="Working">Working</option>
-                                                                <option value="Resolved">Resolved</option>
-                                                            </select>
+                                                            <div className="status-actions" style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                                                                <select
+                                                                    value={fb.status}
+                                                                    onChange={(e) => handleStatusChange(fb._id, e.target.value)}
+                                                                    className="status-select"
+                                                                    disabled={fb.status === 'Closed'}
+                                                                    style={{ flex: 1, minWidth: '120px' }}
+                                                                >
+                                                                    <option value="In Progress">In Progress</option>
+                                                                    <option value="Working">Working</option>
+                                                                    <option value="Resolved">Resolved</option>
+                                                                </select>
+
+                                                                {/* ETA Date Picker */}
+                                                                <input
+                                                                    type="date"
+                                                                    className="date-input"
+                                                                    value={fb.estimatedResolutionDate ? new Date(fb.estimatedResolutionDate).toISOString().split('T')[0] : ''}
+                                                                    onChange={(e) => updateFeedbackStatus(fb._id, fb.status, { estimatedResolutionDate: e.target.value })}
+                                                                    title="Set Estimated Resolution Date"
+                                                                    style={{
+                                                                        flex: 1,
+                                                                        padding: '8px',
+                                                                        borderRadius: '8px',
+                                                                        border: '1px solid var(--input-border)',
+                                                                        background: 'var(--input-bg)',
+                                                                        color: 'var(--text-primary)',
+                                                                        outline: 'none',
+                                                                        fontFamily: 'Outfit, sans-serif',
+                                                                        minWidth: '130px',
+                                                                        colorScheme: theme === 'light' ? 'light' : 'dark'
+                                                                    }}
+                                                                />
+                                                            </div>
                                                         )}
                                                     </td>
                                                 </tr>
@@ -319,10 +350,10 @@ const DeveloperDashboard = ({ onProfileClick }) => {
                                 </div>
                             )}
                         </div>
-                    </section>
+                    </section >
 
                     {/* Quick Actions */}
-                    <section className="dashboard-section section-actions">
+                    < section className="dashboard-section section-actions" >
                         <div className="quick-actions-card">
                             <div className="quick-actions-header">
                                 <h4>Quick Actions</h4>
@@ -337,8 +368,8 @@ const DeveloperDashboard = ({ onProfileClick }) => {
                                 </button>
                             </div>
                         </div>
-                    </section>
-                </div>
+                    </section >
+                </div >
 
                 {selectedFeedback && (
                     <FeedbackDetail
@@ -346,8 +377,8 @@ const DeveloperDashboard = ({ onProfileClick }) => {
                         onClose={() => setSelectedFeedback(null)}
                     />
                 )}
-            </main>
-        </div>
+            </main >
+        </div >
     );
 };
 

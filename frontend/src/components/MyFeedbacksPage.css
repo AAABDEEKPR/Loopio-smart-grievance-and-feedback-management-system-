@@ -1,0 +1,62 @@
+/* MyFeedbacksPage.css */
+
+/* Reuse global vision styles from index.css and AdminDashboard.css where possible */
+
+/* Specific layout for My Feedbacks */
+/* .my-feedbacks-card inherits base styles from vision-card */
+
+/* Responsive Table Container */
+.table-responsive {
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+/* Ensure table header text color matches design */
+.vision-table th {
+    color: var(--vision-text-muted, #A0AEC0);
+    font-size: 11px;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+}
+
+/* Link/Button styles inside table */
+.table-btn {
+    background: none;
+    border: none;
+    color: var(--vision-primary, #0075FF);
+    cursor: pointer;
+    font-weight: 600;
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+
+    /* Fix double scrollbar specific to My Feedbacks Page */
+    .my-feedbacks-card {
+        padding: 15px;
+        overflow: hidden !important;
+        /* Force hide outer scroll */
+    }
+
+    .my-feedbacks-card .table-container {
+        width: 100%;
+        overflow-x: auto;
+        padding-bottom: 5px;
+    }
+
+    /* Aggressively remove scroll from the table element itself to prevent double scrollbar */
+    .my-feedbacks-card .vision-table {
+        overflow: visible !important;
+        display: table !important;
+        width: 100%;
+        min-width: 600px;
+        /* Ensure generic width to trigger scroll */
+    }
+
+    /* Adjust column widths for mobile readability if needed */
+    .vision-table td,
+    .vision-table th {
+        white-space: nowrap;
+    }
+}

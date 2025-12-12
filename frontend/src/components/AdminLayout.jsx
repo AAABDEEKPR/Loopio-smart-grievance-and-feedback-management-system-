@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Outlet, NavLink, useNavigate } from 'react-router-dom';
 import { useTheme } from '../context/ThemeContext';
+import { useFeedback } from '../context/FeedbackContext';
 import NotificationBell from './NotificationBell';
 import {
     FaBars, FaTimes, FaHome, FaFileAlt, FaUser, FaCog,
@@ -11,6 +12,7 @@ import loopioLogo from '../assets/Loopio_logo_.png';
 
 const AdminLayout = ({ onProfileClick }) => {
     const { theme, toggleTheme } = useTheme();
+    const { searchQuery, setSearchQuery } = useFeedback();
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
     const [showProfileMenu, setShowProfileMenu] = useState(false);
     // const navigate = useNavigate(); // Not currently used but good to have
@@ -99,7 +101,12 @@ const AdminLayout = ({ onProfileClick }) => {
 
                     <div className="header-actions">
                         <div className="search-bar">
-                            <input type="text" placeholder="Type here..." />
+                            <input
+                                type="text"
+                                placeholder="Search feedbacks..."
+                                value={searchQuery}
+                                onChange={(e) => setSearchQuery(e.target.value)}
+                            />
                         </div>
 
                         <button className="theme-toggle" onClick={toggleTheme}>

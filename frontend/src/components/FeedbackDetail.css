@@ -9,7 +9,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    z-index: 1000;
+    z-index: 9999;
     backdrop-filter: blur(5px);
 }
 
@@ -17,7 +17,8 @@
     background: #fff;
     width: 90%;
     max-width: 800px;
-    height: 85vh;
+    max-height: 90vh;
+    height: auto;
     border-radius: 16px;
     display: flex;
     flex-direction: column;
@@ -39,7 +40,8 @@
 }
 
 .detail-header {
-    padding: 1.5rem;
+    padding-top: 5rem;
+    /* Restoring full padding for desktop */
     border-bottom: 1px solid #eee;
     display: flex;
     justify-content: space-between;
@@ -98,6 +100,7 @@
 
 .detail-content {
     padding: 2rem;
+    padding-bottom: 5rem;
     overflow-y: auto;
     flex: 1;
 }
@@ -229,4 +232,76 @@
     text-align: center;
     color: #aaa;
     margin-top: 2rem;
+}
+
+.delete-comment-btn {
+    background: none;
+    border: none;
+    color: #999;
+    cursor: pointer;
+    font-size: 0.8rem;
+    padding: 0 5px;
+    margin-left: auto;
+    /* Push to right */
+    display: flex;
+    align-items: center;
+    transition: color 0.2s;
+}
+
+.delete-comment-btn:hover {
+    color: #ff4757;
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 480px) {
+    .feedback-detail-modal {
+        width: 95%;
+        /* Take almost full width */
+        max-height: 85vh;
+        /* Leave some vertical buffer */
+        height: auto;
+        border-radius: 12px;
+        display: flex;
+        /* Ensure flexbox for internal scrolling */
+        flex-direction: column;
+    }
+
+    .detail-header {
+        padding: 1rem;
+        padding-top: 5rem;
+        /* User explicitly requested 5rem top padding */
+        border-bottom: 1px solid #eee;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+        flex-shrink: 0;
+        /* Prevent header from shrinking */
+    }
+
+    /* Ensure close button is visible even if flex wraps */
+    .detail-header .close-btn {
+        font-size: 1.5rem;
+        padding: 5px;
+    }
+
+    .header-left {
+        flex-wrap: wrap;
+    }
+
+    .detail-content {
+        padding: 1rem;
+        padding-bottom: 6rem;
+        /* Extra space for bottom safety */
+    }
+
+    .meta-info {
+        grid-template-columns: 1fr;
+        /* Stack info columns */
+    }
+
+    .comments-section {
+        height: 300px;
+        /* Reduce height on mobile */
+    }
 }

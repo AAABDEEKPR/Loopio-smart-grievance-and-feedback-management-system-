@@ -179,5 +179,24 @@ flowchart TD
     U3 --> END([END])
     D4 --> END
     A4 --> END
+    
+## Frontend Deployment
+
+The frontend of the **Loopio – Smart Grievance & Feedback Management System** has been deployed using **Netlify**.
+
+🔗 **Live URL:**  
+https://loopioapp.netlify.app/
+
+The deployed frontend has been tested to ensure proper page loading and smooth communication with the backend APIs. This confirms that the user interface is accessible online and fully integrated with the backend, allowing users to submit and track grievances in real time.
+
+
+## Backend Deployment
+
+The backend of the **Loopio – Smart Grievance & Feedback Management System** has been deployed using **Render**.
+
+🔗 **Live API URL:**  
+https://loopio-smart-grievance-and-feedback.onrender.com
+
+The backend server is live and operational. When accessed, it confirms that the **Feedback API is running successfully**. This deployment enables real-time grievance handling, notification services, and secure API communication with the frontend.
 
 

@@ -261,7 +261,13 @@ const forgotPassword = async (req, res) => {
         // Create reset URL
         const resetUrl = `${process.env.FRONTEND_URL}/reset-password/${resetToken}`;
 
-        const message = `You are receiving this email because you (or someone else) has requested the reset of a password. Please click on the link below to reset your password:\n\n${resetUrl}`;
+        const message = `
+            <h3>Password Reset Request</h3>
+            <p>You are receiving this email because you (or someone else) has requested the reset of a password.</p>
+            <p>Please click on the link below to reset your password:</p>
+            <a href="${resetUrl}" clicktracking=off>${resetUrl}</a>
+            <p>If you did not request this, please ignore this email.</p>
+        `;
 
         try {
             await sendEmail({

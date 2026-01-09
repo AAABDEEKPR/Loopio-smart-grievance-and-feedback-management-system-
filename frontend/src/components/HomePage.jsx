@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { FaRocket, FaChartLine, FaUsers, FaCogs, FaGithub, FaGoogle, FaLinkedin, FaFacebook, FaStar, FaBolt, FaUserShield, FaBars, FaTimes, FaSun, FaMoon } from 'react-icons/fa';
+import { FaRocket, FaChartLine, FaUsers, FaCogs, FaGithub, FaGoogle, FaLinkedin, FaFacebook, FaStar, FaBolt, FaUserShield, FaBars, FaTimes, FaSun, FaMoon, FaTwitter, FaInstagram } from 'react-icons/fa';
 import './HomePage.css';
 import dashboardPreview from '../assets/dashboard-Preview.png';
 import loopioLogo from '../assets/Loopio_logo_.png';
@@ -146,22 +146,59 @@ const HomePage = () => {
             {/* Footer */}
             <footer className="hp-footer">
                 <div className="hp-footer-content">
-                    <div className="hp-footer-left">
-                        <div className="hp-logo" style={{ fontSize: '20px', display: 'flex', alignItems: 'center' }}>
+                    {/* Column 1: Logo & Description */}
+                    <div className="hp-footer-col">
+                        <div className="hp-logo" style={{ fontSize: '20px', display: 'flex', alignItems: 'center', marginBottom: '15px' }}>
                             <img src={loopioLogo} alt="Loopio" style={{ height: '30px', marginRight: '10px' }} />
                             Loopio
                         </div>
-                        <div className="hp-footer-text">© 2025 Loopio Feedback Management. All rights reserved.</div>
+                        <p className="hp-footer-desc">Streamline feedback management with powerful analytics and real-time collaboration.</p>
+                        <div className="hp-footer-social">
+                            <a href="https://github.com/abhradeepkar" target="_blank" rel="noopener noreferrer" className="hp-social-icon"><FaGithub /></a>
+                            <a href="https://linkedin.com/in/abhradeepkar" target="_blank" rel="noopener noreferrer" className="hp-social-icon"><FaLinkedin /></a>
+                            <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" className="hp-social-icon"><FaTwitter /></a>
+                            <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="hp-social-icon"><FaInstagram /></a>
+                        </div>
                     </div>
-                    
-                    <div className="hp-footer-right">
-                        <div className="hp-nav-links" style={{ gap: '20px', marginBottom: '10px' }}>
-                            <a href="#" className="hp-nav-link" style={{ fontSize: '12px' }}>Privacy</a>
-                            <a href="#" className="hp-nav-link" style={{ fontSize: '12px' }}>Terms</a>
+
+                    {/* Column 2: Services */}
+                    <div className="hp-footer-col">
+                        <h4 className="hp-footer-heading">Services</h4>
+                        <ul className="hp-footer-links">
+                            <li><a href="#features">Feedback Collection</a></li>
+                            <li><a href="#features">Analytics & Reports</a></li>
+                            <li><a href="#features">Team Collaboration</a></li>
+                            <li><a href="#features">Real-time Updates</a></li>
+                        </ul>
+                    </div>
+
+                    {/* Column 3: Quick Links */}
+                    <div className="hp-footer-col">
+                        <h4 className="hp-footer-heading">Quick Links</h4>
+                        <ul className="hp-footer-links">
+                            <li><a href="#features">Features</a></li>
+                            <li><a href="#integrations">Integrations</a></li>
+                            <li><a href="#testimonials">Testimonials</a></li>
+                            <li><a href="#">Privacy Policy</a></li>
+                        </ul>
+                    </div>
+
+                    {/* Column 4: Newsletter */}
+                    <div className="hp-footer-col">
+                        <h4 className="hp-footer-heading">Newsletter</h4>
+                        <p className="hp-footer-newsletter-text">Subscribe to get latest updates</p>
+                        <div className="hp-newsletter-form">
+                            <input type="email" placeholder="Enter your email" className="hp-newsletter-input" />
+                            <button className="hp-newsletter-btn">Subscribe</button>
                         </div>
-                        <div className="hp-footer-signature">
-                            Developed with ❤️ by <span className="hp-developer-name">Abhradeep Kar</span>
-                        </div>
+                    </div>
+                </div>
+
+                {/* Bottom Bar */}
+                <div className="hp-footer-bottom">
+                    <div className="hp-footer-text">© 2026 Loopio Feedback Management. All rights reserved.</div>
+                    <div className="hp-footer-signature">
+                        Developed with ❤️ by <span className="hp-developer-name">Abhradeep Kar</span>
                     </div>
                 </div>
             </footer>

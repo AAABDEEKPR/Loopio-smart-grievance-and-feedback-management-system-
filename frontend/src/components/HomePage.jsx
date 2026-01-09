@@ -143,17 +143,28 @@ const HomePage = () => {
             </section >
 
             {/* Footer */}
-            < footer className="hp-footer" >
-                <div className="hp-logo" style={{ fontSize: '20px', display: 'flex', alignItems: 'center' }}>
-                    <img src={loopioLogo} alt="Loopio" style={{ height: '30px', marginRight: '10px' }} />
-                    Loopio
+            {/* Footer */}
+            <footer className="hp-footer">
+                <div className="hp-footer-content">
+                    <div className="hp-footer-left">
+                        <div className="hp-logo" style={{ fontSize: '20px', display: 'flex', alignItems: 'center' }}>
+                            <img src={loopioLogo} alt="Loopio" style={{ height: '30px', marginRight: '10px' }} />
+                            Loopio
+                        </div>
+                        <div className="hp-footer-text">© 2025 Loopio Feedback Management. All rights reserved.</div>
+                    </div>
+                    
+                    <div className="hp-footer-right">
+                        <div className="hp-nav-links" style={{ gap: '20px', marginBottom: '10px' }}>
+                            <a href="#" className="hp-nav-link" style={{ fontSize: '12px' }}>Privacy</a>
+                            <a href="#" className="hp-nav-link" style={{ fontSize: '12px' }}>Terms</a>
+                        </div>
+                        <div className="hp-footer-signature">
+                            Developed with ❤️ by <span className="hp-developer-name">Abhradeep Kar</span>
+                        </div>
+                    </div>
                 </div>
-                <div className="hp-footer-text">© 2025 Loopio Feedback Management. All rights reserved.</div>
-                <div className="hp-nav-links" style={{ gap: '20px' }}>
-                    <a href="#" className="hp-nav-link" style={{ fontSize: '12px' }}>Privacy</a>
-                    <a href="#" className="hp-nav-link" style={{ fontSize: '12px' }}>Terms</a>
-                </div>
-            </footer >
+            </footer>
         </div >
     );
 };

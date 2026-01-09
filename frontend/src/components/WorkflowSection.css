@@ -125,7 +125,7 @@
 /* Branch Logic */
 .wf-branches {
     display: flex;
-    gap: 40px;
+    gap: 250px;
     align-items: flex-start;
     margin-top: 20px;
 }
@@ -152,13 +152,12 @@
 
 /* Branch Connectors (Horizontal line above branches) */
 .wf-branch-connectors {
-    width: 70%;
+    width: 80%;
     /* Tune this to match branch width */
     height: 2px;
     background: rgba(255, 255, 255, 0.2);
     position: relative;
-    top: -10px;
-    /* Adjust based on diamond margin */
+    top: 10px;
 }
 
 /* Admin Split Logic */
@@ -192,6 +191,7 @@
     .wf-branches {
         flex-direction: column;
         gap: 60px;
+        align-items: center;
     }
 
     .wf-branch-connectors {
@@ -217,5 +217,25 @@
         background: rgba(255, 255, 255, 0.2);
         position: absolute;
         top: -40px;
+        left: 50%;
+        transform: translateX(-50%);
     }
+}
+
+/* Light Mode Overrides */
+[data-theme='light'] .wf-line-vertical,
+[data-theme='light'] .wf-line-vertical-small,
+[data-theme='light'] .wf-line-vertical-long,
+[data-theme='light'] .wf-branch-connectors,
+[data-theme='light'] .wf-branch::before {
+    background: rgba(0, 0, 0, 0.2) !important;
+}
+
+[data-theme='light'] .wf-connector-curve-container {
+    border-top: 2px solid rgba(0, 0, 0, 0.2);
+    border-right: 2px solid rgba(0, 0, 0, 0.2);
+}
+
+[data-theme='light'] .wf-db {
+    border-color: rgba(0, 0, 0, 0.2);
 }
